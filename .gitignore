@@ -1,0 +1,6 @@
+# Sản phẩm build
+DanNhanh.app/
+*.app/
+
+# macOS
+.DS_Store
