@@ -1,0 +1,70 @@
+# Tự build Gõ Tắt cho macOS và Windows mỗi lần push lên main.
+# Push tag dạng v1.0.0 thì tạo thêm bản phát hành (Release) kèm file zip để tải.
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths-ignore: ['README.md', '**.md']   # chỉ sửa tài liệu thì không build
+  workflow_dispatch:                        # cho phép bấm chạy tay trên tab Actions
+
+permissions:
+  contents: write   # cần để tạo Release
+
+concurrency:        # push liên tục thì huỷ lần build cũ, chỉ giữ lần mới nhất
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build GoTat.app
+        run: ./build.sh
+
+      - name: Nén thành zip
+        run: ditto -c -k --keepParent GoTat.app GoTat-macOS.zip
+
+      - name: Lưu bản build (tải ở tab Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: GoTat-macOS
+          path: GoTat-macOS.zip
+          retention-days: 14
+
+      - name: Tạo Release khi push tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: GoTat-macOS.zip
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build GoTat.exe
+        run: dotnet publish windows/GoTat.csproj -c Release -o build/windows --nologo
+
+      - name: Nén thành zip
+        run: Compress-Archive -Path build/windows/GoTat.exe -DestinationPath GoTat-Windows.zip
+
+      - name: Lưu bản build (tải ở tab Actions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: GoTat-Windows
+          path: GoTat-Windows.zip
+          retention-days: 14
+
+      - name: Tạo Release khi push tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: GoTat-Windows.zip

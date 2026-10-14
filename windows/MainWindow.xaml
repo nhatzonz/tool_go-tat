@@ -1,0 +1,114 @@
+<Window x:Class="GoTat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gõ Tắt" Width="980" Height="660" MinWidth="760" MinHeight="480"
+        WindowStartupLocation="CenterScreen" UseLayoutRounding="True"
+        Background="{DynamicResource Win}" Foreground="{DynamicResource Fg}"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13"
+        Icon="pack://application:,,,/logo.png">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!-- Thanh trên: tên app, ngôn ngữ, sáng/tối, bật/tắt -->
+    <Border Background="{DynamicResource Side}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" Padding="16,10">
+      <DockPanel LastChildFill="False">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <Image Source="pack://application:,,,/logo.png" Width="24" Height="24" RenderOptions.BitmapScalingMode="HighQuality"/>
+          <TextBlock Text="Gõ Tắt" FontSize="15" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+          <Border Background="{DynamicResource Field}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="13" Padding="2">
+            <StackPanel Orientation="Horizontal">
+              <Button x:Name="FlagVi" Style="{StaticResource Plain}" Tag="11" Padding="7,4" ToolTip="Tiếng Việt" Click="FlagVi_Click">
+                <Border CornerRadius="2" ClipToBounds="True" Width="21" Height="14">
+                  <Canvas Width="21" Height="14">
+                    <Rectangle Width="21" Height="14" Fill="#DA251D"/>
+                    <Polygon Fill="#FFDD00" Points="10.5,2.8 11.44,5.71 14.49,5.7 12.02,7.49 12.97,10.4 10.5,8.6 8.03,10.4 8.98,7.49 6.51,5.7 9.56,5.71"/>
+                  </Canvas>
+                </Border>
+              </Button>
+              <Button x:Name="FlagEn" Style="{StaticResource Plain}" Tag="11" Padding="7,4" ToolTip="English" Click="FlagEn_Click">
+                <Border CornerRadius="2" ClipToBounds="True" Width="21" Height="14">
+                  <Canvas Width="21" Height="14" ClipToBounds="True">
+                    <Rectangle Width="21" Height="14" Fill="#012169"/>
+                    <Line X1="0" Y1="0" X2="21" Y2="14" Stroke="White" StrokeThickness="3"/>
+                    <Line X1="0" Y1="14" X2="21" Y2="0" Stroke="White" StrokeThickness="3"/>
+                    <Line X1="0" Y1="0" X2="21" Y2="14" Stroke="#C8102E" StrokeThickness="1"/>
+                    <Line X1="0" Y1="14" X2="21" Y2="0" Stroke="#C8102E" StrokeThickness="1"/>
+                    <Rectangle Canvas.Top="4.7" Width="21" Height="4.6" Fill="White"/>
+                    <Rectangle Canvas.Left="8.2" Width="4.6" Height="14" Fill="White"/>
+                    <Rectangle Canvas.Top="5.6" Width="21" Height="2.8" Fill="#C8102E"/>
+                    <Rectangle Canvas.Left="9.1" Width="2.8" Height="14" Fill="#C8102E"/>
+                  </Canvas>
+                </Border>
+              </Button>
+            </StackPanel>
+          </Border>
+
+          <Button x:Name="ThemeBtn" Style="{StaticResource Ghost}" Margin="10,0,0,0" Width="32" Height="28" Click="ThemeBtn_Click">
+            <TextBlock x:Name="ThemeIcon" FontFamily="{StaticResource Icons}" FontSize="14"/>
+          </Button>
+
+          <Ellipse x:Name="StatusDot" Width="8" Height="8" Margin="14,0,6,0" VerticalAlignment="Center"/>
+          <TextBlock x:Name="StatusText" Foreground="{DynamicResource Muted}" FontSize="12" VerticalAlignment="Center"/>
+          <CheckBox x:Name="EnabledSwitch" Style="{StaticResource Switch}" Margin="10,0,0,0" VerticalAlignment="Center"
+                    Click="EnabledSwitch_Click"/>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="290"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Cột trái: tìm kiếm, danh sách phím tắt, phím mở app -->
+      <Border Background="{DynamicResource Side}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Top" Margin="12">
+            <Grid>
+              <TextBox x:Name="SearchBox" Style="{StaticResource FieldBox}" Padding="30,6,8,6" TextChanged="SearchBox_TextChanged"/>
+              <TextBlock FontFamily="{StaticResource Icons}" Text="&#xE721;" Foreground="{DynamicResource Faint}"
+                         Margin="11,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+              <TextBlock x:Name="SearchHint" Foreground="{DynamicResource Faint}" Margin="31,0,0,0"
+                         VerticalAlignment="Center" IsHitTestVisible="False"/>
+            </Grid>
+            <Button x:Name="AddBtn" Style="{StaticResource Primary}" Margin="0,10,0,0" HorizontalAlignment="Stretch" Click="AddBtn_Click">
+              <StackPanel Orientation="Horizontal">
+                <TextBlock FontFamily="{StaticResource Icons}" Text="&#xE710;" FontSize="12" VerticalAlignment="Center"/>
+                <TextBlock x:Name="AddLabel" Margin="6,0,6,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Ctrl+N" FontFamily="{StaticResource Mono}" FontSize="11" Opacity="0.75" VerticalAlignment="Center"/>
+              </StackPanel>
+            </Button>
+          </StackPanel>
+
+          <Border DockPanel.Dock="Bottom" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="12">
+            <StackPanel x:Name="Footer"/>
+          </Border>
+
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="SidebarList" Margin="8,0,8,8"/>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+
+      <!-- Cột phải: chi tiết phím tắt đang chọn -->
+      <Grid Grid.Column="1" x:Name="DetailArea" AllowDrop="True" Background="{DynamicResource Win}"
+            DragOver="Detail_DragOver" Drop="Detail_Drop" DragLeave="Detail_DragLeave">
+        <ScrollViewer x:Name="DetailScroll" VerticalScrollBarVisibility="Auto">
+          <ContentControl x:Name="DetailHost" Focusable="False"/>
+        </ScrollViewer>
+        <Border x:Name="DropOverlay" Visibility="Collapsed" Margin="8" CornerRadius="10" IsHitTestVisible="False"
+                BorderBrush="{DynamicResource Accent}" BorderThickness="2" Background="{DynamicResource AccentSoft}" Opacity="0.85">
+          <TextBlock x:Name="DropText" HorizontalAlignment="Center" VerticalAlignment="Center"
+                     FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource Accent}"/>
+        </Border>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

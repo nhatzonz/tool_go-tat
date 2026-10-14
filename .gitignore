@@ -4,3 +4,11 @@ DanNhanh.app/
 
 # macOS
 .DS_Store
+
+# File nén để gửi đi
+*.zip
+
+# Bản build Windows
+build/
+windows/bin/
+windows/obj/

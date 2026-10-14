@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>       <!-- chỉ dùng cho icon ở khay hệ thống -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting> <!-- cho phép build trên macOS -->
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>GoTat</RootNamespace>
+    <AssemblyName>GoTat</AssemblyName>
+    <Product>Gõ Tắt</Product>
+    <Version>1.0.0</Version>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <!-- Bản phát hành: 1 file .exe chạy luôn, không cần cài .NET -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <NoWarn>WFAC010</NoWarn> <!-- DPI đặt trong app.manifest cho WPF, không dùng API WinForms -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="..\icon\icon_1024.png" Link="logo.png" />
+  </ItemGroup>
+
+</Project>
